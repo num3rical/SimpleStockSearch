@@ -6,15 +6,15 @@ Run the program and enter a ticker symbol. You can change the websites and theme
 
 #### Supported Websites
 These are the websites that you can currently open with this tool:
-* [TradingView](tradingview.com)
-* [Yahoo Finance](finance.yahoo.com)
-* [Twitter](twitter.com)
-* [MarketWatch](marketwatch.com)
-* [Seeking Alpha](seekingalpha.com)
-* [StockCharts](stockcharts.com)
-* [OpenInsider](openinsider.com)
-* [FINVIZ](finviz.com)
-* [Robinhood](robinhood.com)
+* [TradingView](https://tradingview.com)
+* [Yahoo Finance](https://finance.yahoo.com)
+* [Twitter](https://twitter.com)
+* [MarketWatch](https://marketwatch.com)
+* [Seeking Alpha](https://seekingalpha.com)
+* [StockCharts](https://stockcharts.com)
+* [OpenInsider](https://openinsider.com)
+* [FINVIZ](https://finviz.com)
+* [Robinhood](https://robinhood.com)
 
 ### TODO
 * Add more websites
