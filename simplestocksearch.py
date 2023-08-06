@@ -37,8 +37,12 @@ def getExchangeName(symbol):
         'NYSE': 'NYSE'
     }
 
+    headers = {
+        'User-Agent': '',
+    }
+
     try:
-        resp = requests.get(f"https://query1.finance.yahoo.com/v10/finance/quoteSummary/{symbol}?modules=price")
+        resp = requests.get(f"https://query1.finance.yahoo.com/v6/finance/quoteSummary/{symbol}?modules=price", headers=headers)
     except requests.exceptions.RequestException as e:
         raise SystemExit(e)
     resp = resp.json()
@@ -221,12 +225,11 @@ def main():
     # Once the hotkey is activated, the global variable hotkeyActivated is set
     # to True, which closes the tray and restarts the main loop.
     def on_activate():
-
         global hotkeyActivated
         hotkeyActivated = True
 
     hotkeys = keyboard.GlobalHotKeys({
-        '<shift>+<caps_lock>+4': on_activate})
+        '<shift>+<alt>+h': on_activate})
 
     hotkeys.start()
 
