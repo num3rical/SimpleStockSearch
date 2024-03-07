@@ -25,49 +25,13 @@ sg.LOOK_AND_FEEL_TABLE['SSSDefault'] = {
 # The menu structure for the SystemTray
 trayMenu = ['BLANK', ['&Open', 'Exit']]
 
-
-# getExchangeName: Makes a request to Yahoo Finance in order to get the name
-# of the exchange the specified stock is a part of, uses exchangeNamesDict to
-# convert to the name that is compatible with TradingView, and returns the
-# exchange name as a string.
-def getExchangeName(symbol):
-
-    exchangeNamesDict = {
-        'NasdaqGS': 'NASDAQ',
-        'NYSE': 'NYSE'
-    }
-
-    headers = {
-        'User-Agent': '',
-    }
-
-    try:
-        resp = requests.get(f"https://query1.finance.yahoo.com/v6/finance/quoteSummary/{symbol}?modules=price", headers=headers)
-    except requests.exceptions.RequestException as e:
-        raise SystemExit(e)
-    resp = resp.json()
-
-    try:
-        exchange = resp['quoteSummary']['result'][0]['price']['exchangeName']
-    except Exception:
-        return False
-
-    try:
-        exchange = exchangeNamesDict[exchange]
-    except Exception as e:
-        print(e)
-        return False
-
-    return exchange
-
-
 # openSites: Runs through a list of keys in the enabled sites from the user's
 # settings, gets the URL for each of those keys by using the dictionary
 # keys_to_urls, and opens the URLs in a new browser tab.
-def openSites(settings, exchangeName, symbol):
+def openSites(settings, symbol):
 
     keys_to_urls = {
-        '-TRADINGVIEW-': f'https://www.tradingview.com/chart/?symbol={exchangeName}%3A{symbol}',
+        '-TRADINGVIEW-': f'https://www.tradingview.com/chart/?symbol={symbol}',
         '-TWITTER-': f'https://twitter.com/search?q=%24{symbol}',
         '-YAHOOFINANCE-': f'https://finance.yahoo.com/quote/{symbol}',
         '-MARKETWATCH-': f'https://www.marketwatch.com/investing/stock/{symbol}',
@@ -120,7 +84,7 @@ def createSettingsWindow(settings):
                     sg.Checkbox('Yahoo Finance', key='-YAHOOFINANCE-')
                 ],
                 [
-                    sg.Checkbox('Twitter', key='-TWITTER-'),
+                    sg.Checkbox('Twitter/X', key='-TWITTER-'),
                     sg.Checkbox('MarketWatch', key='-MARKETWATCH-')
                 ],
                 [
@@ -187,15 +151,10 @@ def main():
 
         if event == 'Submit':
             symbol = values['-SYMBOL-']
-            exchangeName = getExchangeName(symbol)
 
-            if exchangeName is False:
-                sg.popup(f'There was an error retrieving data for ticker symbol: {symbol}', keep_on_top=True)
-                window['-SYMBOL-'].update('')
-            else:
-                openSites(settings, exchangeName, symbol)
-                window['-SYMBOL-'].update('')
-                break
+            openSites(settings, symbol)
+            window['-SYMBOL-'].update('')
+            break
 
         if event == '-TEXT-':
             event, values = createSettingsWindow(settings).read(close=True)
